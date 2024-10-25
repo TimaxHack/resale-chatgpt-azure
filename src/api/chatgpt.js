@@ -60,6 +60,12 @@ async function queryChatGPT(
   const systemMessage = { role: "system", content: systemMessageContent || "You are chatting with an AI assistant." };
   role = "user";
   const userMessage = { role: "user", content: userQuery };
+  // let messageAllContextUser = singleMessage
+  //   ? [systemMessage, userMessage]
+  //   : await addNewMessage(dialogName, userMessage.content, role, systemMessage.content, systemMessageContent);
+  // if (messageAllContextUser === undefined) {
+  //   messageAllContextUser = await addNewDialogs(dialogName, userMessage.content, role, systemMessage.content);
+  // }
 
   let messageAllContextUser;
   if (singleMessage) {

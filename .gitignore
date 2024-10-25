@@ -7,3 +7,4 @@ docker-compose.test.yml
 docker-compose.prod.yml
 src/db/dialogs.json
 docker-compose.test.yml
+.env

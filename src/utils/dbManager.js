@@ -124,6 +124,25 @@ async function addNewMessage(dialogName, messageContent, senderRole, systemMessa
   return dialog.messages;
 }
 
+<<<<<<< HEAD
+=======
+
+
+
+// async function addNewMessage(dialogName, messageContent, senderRole, systemMessageContent) {
+//   let dialogsData = await loadData(dialogsFilePath);
+//   if (!dialogsData) dialogsData = { dialogs: [] };
+//   let dialog = dialogsData.dialogs.find((d) => d.name === dialogName);
+//   if (!dialog) {
+//     return undefined;
+//   }
+//   const newMessage = { role: senderRole, content: messageContent };
+//   dialog.messages.push(newMessage);
+//   await saveData(dialogsFilePath, dialogsData);
+//   return dialog.messages;
+// }
+
+>>>>>>> parent of 163774e (Update from test)
 async function addNewDialogs(dialogName, messageContent, senderRole, systemMessageContent = "") {
   let dialogsData = await loadData(dialogsFilePath);
   if (!dialogsData) dialogsData = { dialogs: [] };
