@@ -5,5 +5,3 @@ src/db/tokens.json
 src/db/user_tokens.json
 docker-compose.test.yml
 docker-compose.prod.yml
-src/db/dialogs.json
-docker-compose.test.yml

@@ -9,18 +9,18 @@ services:
     volumes:
       - ./src/db:/usr/src/app/src/db
     environment:
-      - PORT=8090
-      - ADMIN_FIRST=677bafc4f788f69d1f23c1881d494a95
-      - AZURE_OPENAI_ENDPOINT_TTS=https://deep-ai-sweden-central.openai.azure.com/openai/deployments/tts-hd/audio/speech?api-version=2024-02-15-preview
-      - AZURE_OPENAI_KEY_TTS=6696972109bb438a9b561248e62a7fe4
-      - OPENAI_API_KEY=d5e330b9332e368cb1d7ac61803a38fcecf3ca81afed70cb61ddcfcaf23e3ce1
-      - OPENAI_BASE_URL=https://api.goapi.xyz/v1/
-      - AIGUOGUO_API_KEY=sk-J79Tsyg6CKmOGkdF1e7c037dC76349D8Aa1dF48749Ac71D1
-      - AIGUOGUO_BASE_URL=https://api.aiguoguo199.com/v1/
-      - FREE_OPENAI_KEY=dChpwTq4VSmDBI8yxa3MVZzapqQNapNx
-      - FREE_OPENAI_BASE_URL=https://api.deepinfra.com/v1/openai
-      - OPENAI_ORIGINAL_API_KEY=sk-oCBWFTXWWMKoVOfwYgPTnJ3i46WsaXV_w0--mR53hoT3BlbkFJA6GrdZlczvW7vNpp9vnYrQgdLNpSWjPUn27atlVXIA
-      - OPENAI_ORIGINAL_BASE_URL=https://api.openai.com/v1
+      - PORT=${PORT}
+      - ADMIN_FIRST=${ADMIN_FIRST}
+      - AZURE_OPENAI_ENDPOINT_TTS=${AZURE_OPENAI_ENDPOINT_TTS}
+      - AZURE_OPENAI_KEY_TTS=${AZURE_OPENAI_KEY_TTS}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL}
+      - AIGUOGUO_API_KEY=${AIGUOGUO_API_KEY}
+      - AIGUOGUO_BASE_URL=${AIGUOGUO_BASE_URL}
+      - FREE_OPENAI_KEY=${FREE_OPENAI_KEY}
+      - FREE_OPENAI_BASE_URL=${FREE_OPENAI_BASE_URL}
+      - OPENAI_ORIGINAL_API_KEY=${OPENAI_ORIGINAL_API_KEY}
+      - OPENAI_ORIGINAL_BASE_URL=${OPENAI_ORIGINAL_BASE_URL}
       
     restart: unless-stopped
     labels:
