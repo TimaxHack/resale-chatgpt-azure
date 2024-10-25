@@ -3,8 +3,7 @@
 import { exec } from 'child_process'; // Импортируем exec с помощью import
 import OpenAI from 'openai'; 
 
-const ADMIN_TOKEN = process.env.ADMIN_FIRST
-console.log(ADMIN_TOKEN)
+
 const openai = new OpenAI({
  apiKey: "677bafc4f788f69d1f23c1881d494a95",
  baseURL: "https://api.deep-foundation.tech/v1/"
