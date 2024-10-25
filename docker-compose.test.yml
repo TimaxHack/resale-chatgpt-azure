@@ -1,0 +1,93 @@
+version: '3.9'
+
+services:
+  chatgpt_proxy_test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatgpt_proxy_test
+    volumes:
+      - ./src/db:/usr/src/app/src/db
+    environment:
+      - PORT=8090
+      - ADMIN_FIRST=677bafc4f788f69d1f23c1881d494a95
+      - AZURE_OPENAI_ENDPOINT_TTS=https://deep-ai-sweden-central.openai.azure.com/openai/deployments/tts-hd/audio/speech?api-version=2024-02-15-preview
+      - AZURE_OPENAI_KEY_TTS=6696972109bb438a9b561248e62a7fe4
+      - OPENAI_API_KEY=d5e330b9332e368cb1d7ac61803a38fcecf3ca81afed70cb61ddcfcaf23e3ce1
+      - OPENAI_BASE_URL=https://api.goapi.xyz/v1/
+      - AIGUOGUO_API_KEY=sk-J79Tsyg6CKmOGkdF1e7c037dC76349D8Aa1dF48749Ac71D1
+      - AIGUOGUO_BASE_URL=https://api.aiguoguo199.com/v1/
+      - FREE_OPENAI_KEY=dChpwTq4VSmDBI8yxa3MVZzapqQNapNx
+      - FREE_OPENAI_BASE_URL=https://api.deepinfra.com/v1/openai
+      - OPENAI_ORIGINAL_API_KEY=sk-oCBWFTXWWMKoVOfwYgPTnJ3i46WsaXV_w0--mR53hoT3BlbkFJA6GrdZlczvW7vNpp9vnYrQgdLNpSWjPUn27atlVXIA
+      - OPENAI_ORIGINAL_BASE_URL=https://api.openai.com/v1
+      
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chatgpt_proxy_test.rule=Host(`api-test.${HOST}`)"
+      - "traefik.http.routers.chatgpt_proxy_test.entrypoints=websecure"
+      - "traefik.http.routers.chatgpt_proxy_test.tls.certresolver=myresolver"
+    networks:
+      - trfk_test
+
+  traefik_test:
+    image: traefik:v2.9
+    container_name: traefik_test
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--api.dashboard=true"
+      - "--entrypoints.web.address=:8089" # Изменён порт
+      - "--entrypoints.websecure.address=:8444" # Изменён порт
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--certificatesresolvers.myresolver.acme.email=${EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard_test.rule=Host(`traefik-test.${HOST}`)"
+      - "traefik.http.routers.dashboard_test.entrypoints=websecure"
+      - "traefik.http.routers.dashboard_test.service=api@internal"
+      - "traefik.http.routers.dashboard_test.middlewares=auth"
+      - "traefik.http.routers.dashboard_test.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.auth.basicauth.usersfile=/etc/traefik/usersfile"
+    ports:
+      - "8889:88"      # Изменён порт хоста
+      - "8444:443"     # Изменён порт хоста
+    volumes:
+      - "./usersfile:/etc/traefik/usersfile:ro"
+      - "./letsencrypt_test:/letsencrypt" # Используется отдельный каталог для сертификатов
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - trfk_test
+  desktop_test:
+    image: portainer/portainer-ce:latest
+    container_name: "desktop_test"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.desktop_test.entrypoints=web"
+      - "traefik.http.routers.desktop_test.rule=Host(`desktop-test.${HOST}`)"
+      - "traefik.http.middlewares.desktop_test-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.desktop_test.middlewares=desktop_test-https-redirect"
+      - "traefik.http.routers.desktop_test-secure.entrypoints=websecure"
+      - "traefik.http.routers.desktop_test-secure.rule=Host(`desktop-test.${HOST}`)"
+      - "traefik.http.routers.desktop_test-secure.tls=true"
+      - "traefik.http.routers.desktop_test-secure.tls.certresolver=myresolver"
+      - "traefik.http.routers.desktop_test-secure.service=desktop_test"
+      - "traefik.http.services.desktop_test.loadbalancer.server.port=9008"
+    volumes:
+      - "desktop_volume_test:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    restart: unless-stopped
+    networks:
+      - trfk_test
+
+networks:
+  trfk_test:
+    driver: overlay
+    external: true
+
+volumes:
+  desktop_volume_test:
